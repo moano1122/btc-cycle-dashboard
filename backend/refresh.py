@@ -23,7 +23,7 @@ from typing import Any
 from . import derived, store
 from .catalog import INDICATORS, SUPPORT_SERIES, onchain_indicators
 from . import reconcile
-from .sources import bitcoin_data, coinmetrics, etf, market
+from .sources import bitcoin_data, coinmetrics, etf, market, sentiment
 
 log = logging.getLogger(__name__)
 
@@ -79,6 +79,13 @@ def refresh(*, force: bool = False, include_history: bool = True) -> dict[str, A
         report["market"] = market.incremental_update()
     except Exception as exc:  # noqa: BLE001
         report["errors"].append(f"binance: {exc}")
+
+    # Miedo y codicia: fuente abierta, sin cupo. Va con el bloque gratuito para
+    # no competir por las peticiones que necesitan las métricas on-chain.
+    try:
+        report["fear_greed"] = sentiment.fetch()
+    except Exception as exc:  # noqa: BLE001
+        report["errors"].append(f"fear_greed: {exc}")
 
     states = store.get_metric_states()
 

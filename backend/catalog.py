@@ -607,16 +607,16 @@ INDICATORS: list[Indicator] = [
         label="Fear & Greed",
         category="sentimiento",
         weight=3,
-        source="onchain",
-        endpoint="fear-greed",
+        source="derived",   # alternative.me, gratis y sin cupo
+        endpoint=None,
         smooth_days=7,
-        anchors=[(90, 0), (75, 8), (60, 20), (48, 35), (35, 52), (25, 70), (15, 90), (8, 100)],
-        trigger=20.0,
+        anchors=[(5, 100), (10, 94), (14, 86), (20, 76), (26, 64), (44, 48), (64, 28), (75, 12), (95, 0)],
+        trigger=7.5,
         trigger_dir="below",
         decimals=0,
-        historic={"2018-12": 11, "2020-03": 8, "2022-11": 20},
+        historic={"suelo 2018": 9, "suelo 2022": 6},
         summary="Índice compuesto de sentimiento del mercado. Útil solo como confirmación: el miedo extremo acompaña los suelos pero también aparece en caídas intermedias.",
-        refresh_tier=2,
+        refresh_tier=1,
     ),
 ]
 
