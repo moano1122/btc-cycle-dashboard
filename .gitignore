@@ -8,3 +8,7 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
+
+# Archivos temporales de pruebas manuales
+*_tmp.json
+*_tmp.html
