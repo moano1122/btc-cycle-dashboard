@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BTC Indicators — Suelo de mercado</title>
+<link rel="stylesheet" href="/static/app.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">₿</span>
+    <div>
+      <div class="brand-title">BTC Indicators</div>
+      <div class="brand-sub">Detección de suelo de ciclo · on-chain</div>
+    </div>
+  </div>
+  <div class="price-block">
+    <div class="price-label">BTC / USD</div>
+    <div class="price-value" id="price">—</div>
+    <div class="price-sub" id="price-sub"></div>
+  </div>
+  <div class="topbar-actions">
+    <button id="btn-refresh" class="btn">Actualizar datos</button>
+    <button id="btn-status" class="btn btn-ghost">Estado</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= SCORE PRINCIPAL ================= -->
+  <section class="hero">
+    <div class="gauge-wrap">
+      <div id="gauge"></div>
+      <div class="gauge-center">
+        <div class="gauge-score" id="score">—</div>
+        <div class="gauge-of">/ 100</div>
+      </div>
+    </div>
+
+    <div class="hero-info">
+      <div class="band" id="band">Cargando…</div>
+      <p class="band-blurb" id="band-blurb"></p>
+
+      <div class="coverage">
+        <div class="coverage-head">
+          <span>Cobertura de datos</span>
+          <strong id="coverage-pct">—</strong>
+        </div>
+        <div class="bar"><div class="bar-fill" id="coverage-bar"></div></div>
+        <div class="coverage-note" id="coverage-note"></div>
+      </div>
+
+      <div class="cat-strip" id="cat-strip"></div>
+    </div>
+  </section>
+
+  <div class="disclaimer">
+    <strong>Esto no es una recomendación de inversión.</strong>
+    Los umbrales están calibrados sobre cuatro suelos de ciclo (2015, 2018, marzo 2020 y noviembre 2022):
+    una muestra minúscula. Además, en el techo de octubre de 2025 ningún indicador on-chain mayor dio
+    señal limpia de venta, lo que sugiere que los ETFs spot y los tesoros corporativos cambiaron la
+    mecánica del mercado. Trate cada número como una probabilidad, no como una certeza.
+  </div>
+
+  <!-- ================= SCORE HISTÓRICO ================= -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>El score contra el precio, en el tiempo</h2>
+      <p>Para juzgar si el score sirve, mírelo en los suelos anteriores. Si la línea no subió a la zona verde
+         en noviembre de 2022, el modelo no vale — y eso lo tiene que poder ver usted, no creérmelo.</p>
+    </div>
+    <div id="score-history" class="chart-tall"></div>
+  </section>
+
+  <!-- ================= INDICADORES ================= -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Indicadores</h2>
+      <p>Ordenados por peso. Haga clic en cualquiera para abrir su gráfica histórica y el tutorial completo.</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters" id="filters"></div>
+      <div class="toolbar-right">
+        <label class="chk"><input type="checkbox" id="only-triggered"> Solo los disparados</label>
+        <button class="btn btn-ghost btn-sm" id="btn-reset-weights">Restaurar pesos</button>
+      </div>
+    </div>
+
+    <div id="cards" class="cards"></div>
+  </section>
+
+  <!-- ================= ALERTAS ================= -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Historial de alertas</h2>
+      <p>Cada cruce de umbral queda registrado aquí <span id="tg-state"></span></p>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="btn-test-tg">Probar envío a Telegram</button>
+    <div id="alerts" class="alerts"></div>
+  </section>
+
+</main>
+
+<!-- ================= MODAL DE ESTADO ================= -->
+<div class="modal" id="modal-status" hidden>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Estado del sistema</h3>
+      <button class="btn-x" data-close>×</button>
+    </div>
+    <div id="status-body"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
